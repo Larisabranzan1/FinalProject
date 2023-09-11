@@ -73,3 +73,5 @@ public class RegistrationTest extends BaseTest {
         }
     }
 }
+
+//TEST

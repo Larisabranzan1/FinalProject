@@ -27,7 +27,7 @@ public class RegistrationPage  {
     @FindBy(id = "reg_password")
     private WebElement regPass;
 
-    @FindBy(id = "privacy_policy_reg")
+    @FindBy(xpath = "//*[@id='privacy_policy_reg']/..")
     private WebElement acceptPolicy;
 
 
@@ -42,7 +42,7 @@ public class RegistrationPage  {
 
 
     @FindBy(xpath = "//*[@class='woocommerce-error']//child::li")
-    private WebElement passError;
+    private WebElement passErr;
 
 
     public RegistrationPage(WebDriver driver) {
@@ -59,6 +59,7 @@ public class RegistrationPage  {
         wait.until(ExpectedConditions.elementToBeClickable(regEmail));
         regEmail.clear();
         regEmail.sendKeys(username);
+        registerPageBtn.click();
     }
 
         public void passwordInputRegistration(String password){
@@ -66,6 +67,15 @@ public class RegistrationPage  {
             regPass.clear();
             regPass.sendKeys(password);
         }
+
+    public void register(String username, String password) {
+        wait.until(ExpectedConditions.elementToBeClickable(regEmail));
+        regEmail.clear();
+        regEmail.sendKeys(username);
+       regPass.clear();
+        regPass.sendKeys(password);
+        registerPageBtn.click();
+    }
 
     public String getName(){
         wait.until(ExpectedConditions.visibilityOf(registerPageBtn));
@@ -83,7 +93,9 @@ public class RegistrationPage  {
             try {
                 actions.keyDown(Keys.CONTROL).sendKeys(Keys.END).keyUp(Keys.CONTROL).build().perform();
                 acceptPolicy.click();
-                break;
+                if (acceptPolicy.findElement(By.xpath("//*[@id='privacy_policy_reg']/..")).isSelected()) {
+                    break;
+                }
             } catch (MoveTargetOutOfBoundsException | ElementClickInterceptedException e) {
                 currentRetry++;
             }
@@ -92,6 +104,8 @@ public class RegistrationPage  {
             throw new MyCustomException("Max retry reached");
         }
     }
+
+
 
     public void unclickTermsCheckboxUsingActionsScroll() throws MyCustomException {
         wait.until(ExpectedConditions.visibilityOf(acceptPolicy));
@@ -125,17 +139,27 @@ public class RegistrationPage  {
         registerPageBtn.click();
     }
 
+    public void clickAcceptTerms(){
+        Actions clickAction = new Actions(driver);
+        wait = new WebDriverWait(driver, Duration.ofSeconds(20));
+        wait.until(presenceOfElementLocated(By.xpath("//*[@id='privacy_policy_reg']/..")));
+        clickAction.moveToElement(acceptPolicy);
+        acceptPolicy.click();
+    }
+
     public String usernameErr() {
+
         try {
-            return regEmail.getText();
+            return usernameErr.getText();
         } catch (NoSuchElementException ex) {
             return "";
         }
     }
 
-    public String passError() {
+    public String passErr() {
+
         try {
-            return regPass.getText();
+            return passErr.getText();
         } catch (NoSuchElementException ex) {
             return "";
         }

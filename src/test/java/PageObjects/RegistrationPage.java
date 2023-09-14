@@ -1,6 +1,5 @@
 package PageObjects;
 
-import Tests.BaseTest;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.interactions.MoveTargetOutOfBoundsException;
@@ -38,12 +37,7 @@ public class RegistrationPage  {
     private WebElement myAccount;
 
     @FindBy(xpath = "//*[@class='woocommerce-error']//child::li")
-    private WebElement  usernameErr;
-
-
-    @FindBy(xpath = "//*[@class='woocommerce-error']//child::li")
-    private WebElement passErr;
-
+    private WebElement registerErr;
 
     public RegistrationPage(WebDriver driver) {
         this.driver = driver;
@@ -147,24 +141,14 @@ public class RegistrationPage  {
         acceptPolicy.click();
     }
 
-    public String usernameErr() {
+    public String getRegisterErr() {
 
         try {
-            return usernameErr.getText();
+            wait.until(ExpectedConditions.visibilityOf(registerErr));
+            return registerErr.getText();
         } catch (NoSuchElementException ex) {
             return "";
         }
     }
-
-    public String passErr() {
-
-        try {
-            return passErr.getText();
-        } catch (NoSuchElementException ex) {
-            return "";
-        }
-    }
-
-
 
 }

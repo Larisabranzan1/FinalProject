@@ -44,6 +44,13 @@ public class RegistrationPage  {
     @FindBy(xpath = "//*[@class='woocommerce-error']//child::li")
     private WebElement passErr;
 
+    @FindBy(xpath = "//div[@class='woocommerce-MyAccount-content']//h3//span[contains(text(), 'Bine ai venit')]")
+    private WebElement welcomeRegisterMessage;
+
+    @FindBy(xpath = "//*[@class='woocommerce-error']//child::li")
+    private WebElement registerErr;
+
+
 
     public RegistrationPage(WebDriver driver) {
         this.driver = driver;
@@ -165,6 +172,24 @@ public class RegistrationPage  {
         }
     }
 
+    public String WelcomeRegister() {
 
+        try {
+            return welcomeRegisterMessage.getText();
+        } catch (NoSuchElementException ex) {
+            return "";
+        }
+    }
+
+    public String getRegisterErr() {
+
+        try {
+            wait.until(ExpectedConditions.visibilityOf(registerErr));
+            return registerErr.getText();
+        } catch (NoSuchElementException ex) {
+            return "";
+        }
+    }
 
 }
+

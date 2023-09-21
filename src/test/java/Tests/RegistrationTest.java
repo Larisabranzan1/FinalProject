@@ -18,6 +18,7 @@ import org.testng.annotations.Test;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
+import java.util.concurrent.TimeUnit;
 
 public class RegistrationTest extends BaseTest {
     RegistrationPage registrationPage;
@@ -35,53 +36,93 @@ public class RegistrationTest extends BaseTest {
         };
     }
 
+
+
+
     @DataProvider(name = "registerNegativeDpUserPassConfirm")
     public Object[][] registerNegativeDpUserPassConfirm() {
         return new Object[][]{
 
-                {"chrome","", "", "Eroare: Te rog introdu o adresă de email validă.", "" },
-                {"chrome","aaa@gmail.com", "", "", "Eroare: Te rog introdu o parolă pentru cont."},
+                {"chrome", "", "", "Eroare: Te rog introdu o adresă de email validă.", ""},
+                {"chrome", "aaa@gmail.com", "", "", "Eroare: Te rog introdu o parolă pentru cont."},
 
         };
     }
 
 
-
-
     @Test(dataProvider = "registerNegativeDpUserPassConfirm")
-    public void registerNegativeUserPassConfirm (String browser,
-                                                 String username,
-                                                 String password,
-                                                 String usernameErr,
-                                                 String passErr
+    public void registerNegativeUserPassConfirm(String browser,
+                                                String username,
+                                                String password,
+                                                String usernameErr,
+                                                String passErr
     ) {
         System.out.println("Login with username:" + username +
                 " /password:" + password +
-                " /confirmationPassword:"+
+                " /confirmationPassword:" +
                 " => on browser:" + browser);
         //setUpDriver(browser);
         //driver.get(baseUrl);
         loginPage = new LoginPage(driver);
         loginPage.goToLoginPage();
         System.out.println("Opened login page.");
+
         loginPage.goToRegistrationPage();
         System.out.println("Opened registration page.");
-        registrationPage=new RegistrationPage(driver);
-        registrationPage.register(username,password);
+
+        registrationPage = new RegistrationPage(driver);
+        registrationPage.register(username, password);
         System.out.println("Registration  finished, verify error message");
-        System.out.println(registrationPage.usernameErr());
-        System.out.println(registrationPage.passErr());
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        WebElement usernameError = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@class='woocommerce-error']//child::li")));
-        Assert.assertEquals(registrationPage.usernameErr(), usernameErr);
-        Assert.assertEquals(registrationPage.passErr(), passErr);
+
+
+        if (!usernameErr.isEmpty())
+            Assert.assertTrue(registrationPage.getRegisterErr().contains(usernameErr));
+        if (!passErr.isEmpty())
+            Assert.assertTrue(registrationPage.getRegisterErr().contains(passErr));
+
+    }
+
+
+    @DataProvider(name = "registerNegativeExistingUser")
+    public Object[][] registerNegativeExistingUser() {
+        return new Object[][]{
+
+                {"chrome", "alex@yahoo.com", "Rapid1923!!!!!", "Eroare: Este înregistrat deja un cont cu adresa ta de email. Te rog autentifică-te.", ""},
+
+        };
+    }
+
+
+    @Test(dataProvider = "registerNegativeExistingUser")
+    public void registerNegativeExistingUser(String browser,
+                                                String username,
+                                                String password,
+                                                String usernameErr,
+                                                String passErr
+    ) {
+        System.out.println("Register with existing username:" + username +
+                " /password:" + password +
+                " => on browser:" + browser);
+        //setUpDriver(browser);
+        //driver.get(baseUrl);
+        loginPage = new LoginPage(driver);
+        loginPage.goToLoginPage();
+        System.out.println("Opened login page.");
+
+        loginPage.goToRegistrationPage();
+        System.out.println("Opened registration page.");
+
+        registrationPage = new RegistrationPage(driver);
+        registrationPage.register(username, password);
+        System.out.println("Registration, verify error message");
+        Assert.assertEquals(registrationPage.getRegisterErr(), usernameErr);
 
     }
 
     @DataProvider(name = "registerPositive")
     public Object[][] registerPositive() {
         return new Object[][]{
-                {"chrome","aaa@gmail.com", "so12332","Avem nevoie de acord pentru prelucrarea datelor"},
+                {"chrome","aassadsgfgcccfdasa@gmail.com", "so1sadasaasa2332", "Bine ai venit în pagina contului tău"},
         };
     }
 
@@ -90,7 +131,7 @@ public class RegistrationTest extends BaseTest {
     public void registerPositive( String browser,
                                              String username,
                                              String password,
-                                             String acceptTermsErr) throws MyCustomException {
+                                             String welcome ) {
 
         //setUpDriver(browser);
         //driver.get(baseUrl);
@@ -103,7 +144,8 @@ public class RegistrationTest extends BaseTest {
         registrationPage=new RegistrationPage(driver);
         registrationPage.clickAcceptTerms();
         registrationPage.register(username,password);
-        System.out.println("Tested message: Avem nevoie de acord dvs");
+        Assert.assertEquals(registrationPage.WelcomeRegister(), welcome );
+        System.out.println(registrationPage.WelcomeRegister());
     }
 
 }

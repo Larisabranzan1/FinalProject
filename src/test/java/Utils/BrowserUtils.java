@@ -9,7 +9,7 @@ import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
 public class BrowserUtils {
-   static WebDriver driver;
+   public static WebDriver driver;
     public static WebDriver getBrowser(String browser){
         switch (browser.toLowerCase()){
             case ("chrome"): {

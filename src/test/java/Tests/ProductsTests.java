@@ -4,6 +4,7 @@ import PageObjects.AccountPage;
 import PageObjects.Products;
 import PageObjects.LoginPage;
 import PageObjects.RegistrationPage;
+import org.openqa.selenium.ElementClickInterceptedException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
@@ -74,12 +75,22 @@ public class ProductsTests extends BaseTest {
         loginPage.goToProducts(driver);
         products = new Products(driver);
         int maxQuantity = 4; // Maximum quantity
+        int retry = 0; // Initialize the retry variable
 
         for (int i = 0; i < maxQuantity; i++) {
 
             products.clickonProduct(); //Clicks on Add to cart button
             products.clickOnMyCart();
-            products.clickOnPlus();
+
+            try {
+                products.clickOnPlus();
+                break;
+            } catch (ElementClickInterceptedException e) {
+                retry++;
+
+            }
+
+
 
             if (i < maxQuantity - 1) {
                 // Check if the expected message is not displayed yet

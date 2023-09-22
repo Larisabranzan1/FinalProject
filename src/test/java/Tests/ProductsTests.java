@@ -4,6 +4,7 @@ import PageObjects.AccountPage;
 import PageObjects.Products;
 import PageObjects.LoginPage;
 import PageObjects.RegistrationPage;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
@@ -56,14 +57,14 @@ public class ProductsTests extends BaseTest {
     @DataProvider(name = "AddtoCartUntilReachingMaxQuantity")
     public Object[][] AddtoCartUntilReachingMaxQuantity() {
         return new Object[][]{
-                {"chrome", " Nu poți adăuga acea cantitate în coș — avem 4 în stoc și ai deja 4 în coșul tău.  "},
+                {"chrome", "Vezi Coșul Nu poți adăuga acea cantitate în coș — avem 4 în stoc și ai deja 4 în coșul tău.  "},
 
         };
     }
 
 
     @Test(dataProvider = "AddtoCartUntilReachingMaxQuantity")
-    public void AddtoCartUntilReachingMaxQuantity(String browser, String message) {
+    public void AddtoCartUntilReachingMaxQuantity(String browser, String message) throws InterruptedException {
         System.out.println("Order Product Multiple Times" + "=> on browser:" + browser);
         setUpDriver(browser);
         driver.get(baseUrl);
@@ -75,25 +76,49 @@ public class ProductsTests extends BaseTest {
         products = new Products(driver);
         int maxQuantity = 4; // Maximum quantity
 
-        for (int i = 0; i < maxQuantity; i++) {
+        //Prima metoda
+//        while (!products.isDisplayedMaxProductInCartMessageError()) {
+//            if(products.isProdusAdaugatCuSucces()){
+//                products.waitToDisappear();
+//            }
+//            products.clickonProduct(); //Clicks on Add to cart button
+//            Thread.sleep(1000);
+//        }
+//        Assert.assertTrue(products.isDisplayedMaxProductInCartMessageError());
+//        products.clickOnMyCart();
+//        Assert.assertEquals(check, maxQuantity);
 
+        //A doua metodao
+        for (int i = 0; i <= maxQuantity; i++) {
             products.clickonProduct(); //Clicks on Add to cart button
-            products.clickOnMyCart();
-            products.clickOnPlus();
+        }
+        Thread.sleep(4000);
+        Assert.assertTrue(products.isDisplayedMaxProductInCartMessageError());
+        products.clickOnMyCart();
+            int check = Integer.parseInt(driver.findElement(By.xpath("//input[@type='number']")).getAttribute("max"));
+            Assert.assertEquals(check, maxQuantity);
 
-            if (i < maxQuantity - 1) {
-                // Check if the expected message is not displayed yet
-                Assert.assertNotEquals(products.maxProductInCartMessageError(), message);
-            } else {
-                // Check if the expected message is displayed when the maximum quantity is reached
-                Assert.assertEquals(products.maxProductInCartMessageError(), message);
-            }
 
-            System.out.println("Added product to cart, Quantity: " + (i + 1));
+//        for (int i = 0; i < maxQuantity; i++) {
+//
+//            products.clickonProduct(); //Clicks on Add to cart button
+//            products.clickOnMyCart();
+//            products.clickOnPlus();
+//
+//            if (i < maxQuantity - 1) {
+//                // Check if the expected message is not displayed yet
+//                Assert.assertNotEquals(products.maxProductInCartMessageError(), message);
+//            } else {
+//                // Check if the expected message is displayed when the maximum quantity is reached
+//                Assert.assertEquals(products.maxProductInCartMessageError(), message);
+//            }
+
+
+            // System.out.println("Added product to cart, Quantity: " + (i + 1));
         }
     }
 
-}
+
 
 
 

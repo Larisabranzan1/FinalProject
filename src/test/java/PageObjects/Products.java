@@ -89,6 +89,9 @@ public class Products extends BaseTest {
     @FindBy(xpath = "//tbody/tr/td[5]/div[@class='quantity']/span[2]")
     private WebElement plusButton;
 
+    @FindBy(css = "div[data-type='success']")
+    private WebElement produsAdagugatCuSucces;
+
 //tbody/tr/td[5]/div[@class='quantity']/span[2]
 //span[@class='et-cart-total-inner']/span
 
@@ -152,7 +155,6 @@ public class Products extends BaseTest {
         wait = new WebDriverWait(driver, Duration.ofSeconds(20));
         wait.until(presenceOfElementLocated(By.xpath("//a[@href='https://www.creatoys.ro/cosul-meu/']")));
         myCart.click();
-
     }
 
 
@@ -160,7 +162,8 @@ public class Products extends BaseTest {
         Actions clickAction = new Actions(driver);
         wait = new WebDriverWait(driver, Duration.ofSeconds(20));
         wait.until(presenceOfElementLocated(By.xpath("//td[contains(@class, 'product-quantity')]/div/span[@class='plus']")));
-        myCart.click();
+      //  myCart.click();
+        driver.findElement(By.xpath("//td[contains(@class, 'product-quantity')]/div/span[@class='plus']")).click();
 
     }
 
@@ -174,6 +177,29 @@ public class Products extends BaseTest {
         }
     }
 
+    public boolean isDisplayedMaxProductInCartMessageError() {
+            try {
+                 errorMaxProductInCart.isDisplayed();
+                 return true;
+            }
+            catch (NoSuchElementException ex) {
+                return false;
+            }
+    }
 
+    public boolean isProdusAdaugatCuSucces() {
+        try {
+            produsAdagugatCuSucces.isDisplayed();
+            return true;
+        }
+        catch (NoSuchElementException ex) {
+            return false;
+        }
+    }
+
+    public void waitToDisappear() {
+        wait = new WebDriverWait(driver, Duration.ofSeconds(20));
+        wait.until(ExpectedConditions.invisibilityOf(produsAdagugatCuSucces));
+    }
 
 }

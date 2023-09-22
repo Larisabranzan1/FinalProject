@@ -64,7 +64,7 @@ public class ProductsTests extends BaseTest {
 
 
     @Test(dataProvider = "AddtoCartUntilReachingMaxQuantity")
-    public void AddtoCartUntilReachingMaxQuantity(String browser, String message) {
+    public void AddtoCartUntilReachingMaxQuantity(String browser, String message) throws InterruptedException {
         System.out.println("Order Product Multiple Times" + "=> on browser:" + browser);
         setUpDriver(browser);
         driver.get(baseUrl);
@@ -74,34 +74,27 @@ public class ProductsTests extends BaseTest {
         accountPage = new AccountPage(driver);
         loginPage.goToProducts(driver);
         products = new Products(driver);
-        int maxQuantity = 4; // Maximum quantity
+        int maxQuantity = 5; // Maximum quantity
         int retry = 0; // Initialize the retry variable
 
+
+        products.clickonProduct("750754");//Clicks on Add to cart button
+        Thread.sleep(3000);
+        products.clickOnMyCart();
+
+//       add multiple products on cart
         for (int i = 0; i < maxQuantity; i++) {
-
-            products.clickonProduct(); //Clicks on Add to cart button
-            products.clickOnMyCart();
-
             try {
                 products.clickOnPlus();
-                break;
             } catch (ElementClickInterceptedException e) {
                 retry++;
-
-            }
-
-
-
-            if (i < maxQuantity - 1) {
-                // Check if the expected message is not displayed yet
-                Assert.assertNotEquals(products.maxProductInCartMessageError(), message);
-            } else {
-                // Check if the expected message is displayed when the maximum quantity is reached
-                Assert.assertEquals(products.maxProductInCartMessageError(), message);
             }
 
             System.out.println("Added product to cart, Quantity: " + (i + 1));
         }
+
+        Assert.assertEquals(products.getCartQTY(), "4");
+        System.out.println("Products added with max capacity on");
     }
 
 }

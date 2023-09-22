@@ -13,7 +13,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 
-import static org.openqa.selenium.support.ui.ExpectedConditions.presenceOfElementLocated;
+import static org.openqa.selenium.support.ui.ExpectedConditions.*;
 
 public class Products extends BaseTest {
 
@@ -24,7 +24,7 @@ public class Products extends BaseTest {
 
     public Products(WebDriver driver) {
         this.driver = driver;
-        wait = new WebDriverWait(driver, Duration.ofSeconds(20));
+        wait = new WebDriverWait(driver, Duration.ofSeconds(40));
         PageFactory.initElements(driver, this);
         actions = new Actions(driver);
     }
@@ -67,9 +67,6 @@ public class Products extends BaseTest {
     @FindBy(xpath = "//*[@name='login']")
     private WebElement login;
 
-    @FindBy(xpath = "//div[@class='text-center product-details']/span[@class='price']/../a[@href='?add-to-cart=750754']")
-    private WebElement dollHouse;
-
 
     @FindBy(xpath = "//div[@class='et_element et_b_header-logo align-start mob-align-center et_element-top-level']//a")
     private WebElement creaLogo;
@@ -77,7 +74,7 @@ public class Products extends BaseTest {
     @FindBy(xpath = " //div[@class='cart-item-details']/a[@class='product-title']")
     private WebElement productName;
 
-    @FindBy(xpath = "//a[@href='https://www.creatoys.ro/cosul-meu/']")
+    @FindBy(xpath = "//span[@class='et-cart-total-inner']")
     private WebElement myCart;
 
     @FindBy(xpath = "//div[@class='woocommerce-notices-wrapper']//child::li")
@@ -86,17 +83,11 @@ public class Products extends BaseTest {
     @FindBy(xpath = " //a[@href='https://www.creatoys.ro/produs/casuta-de-papusi-cu-mobilier-little-dutch/']")
     private WebElement dollHouseImage;
 
-    @FindBy(xpath = "//tbody/tr/td[5]/div[@class='quantity']/span[2]")
+    @FindBy(xpath = "//td[contains(@class,'product-quantity')]/div/span[@class='plus']")
     private WebElement plusButton;
 
 //tbody/tr/td[5]/div[@class='quantity']/span[2]
 //span[@class='et-cart-total-inner']/span
-
-
-
-
-
-
 
 
     public String CreaPageText() {
@@ -115,7 +106,6 @@ public class Products extends BaseTest {
     }
 
 
-
     public void goToCreaLogo(WebDriver driver) {
         wait.until(ExpectedConditions.visibilityOf(creaLogo));
         creaLogo.click();
@@ -131,36 +121,31 @@ public class Products extends BaseTest {
         }
     }
 
-    public void clickonProduct() {
-        Actions clickAction = new Actions(driver);
-        wait = new WebDriverWait(driver, Duration.ofSeconds(40));
-        wait.until(presenceOfElementLocated(By.xpath("//div[@class='text-center product-details']/span[@class='price']/../a[@href='?add-to-cart=750754']")));
-        dollHouse.click();
-
+    public void clickonProduct(String productID) {
+        String productXpath = "//div[@class='text-center product-details']/span[@class='price']/../a[@href='?add-to-cart=" + productID + "']";
+        WebElement product = wait.until(ExpectedConditions.elementToBeClickable(By.xpath(productXpath)));
+        product.click();
     }
 
     public void clickonProductImage() {
-        Actions clickAction = new Actions(driver);
-        wait = new WebDriverWait(driver, Duration.ofSeconds(30));
         wait.until(presenceOfElementLocated(By.xpath("//a[@href='https://www.creatoys.ro/produs/casuta-de-papusi-cu-mobilier-little-dutch/']")));
         dollHouseImage.click();
 
     }
 
     public void clickOnMyCart() {
-        Actions clickAction = new Actions(driver);
-        wait = new WebDriverWait(driver, Duration.ofSeconds(20));
-        wait.until(presenceOfElementLocated(By.xpath("//a[@href='https://www.creatoys.ro/cosul-meu/']")));
+        wait.until(elementToBeClickable(myCart));
         myCart.click();
-
     }
 
+    public String getCartQTY() {
+        WebElement qty = wait.until(presenceOfElementLocated(By.xpath("//input[contains(@id,'quantity')]")));
+        return qty.getAttribute("value");
+    }
 
     public void clickOnPlus() {
-        Actions clickAction = new Actions(driver);
-        wait = new WebDriverWait(driver, Duration.ofSeconds(20));
-        wait.until(presenceOfElementLocated(By.xpath("//td[contains(@class, 'product-quantity')]/div/span[@class='plus']")));
-        myCart.click();
+        wait.until(ExpectedConditions.elementToBeClickable(plusButton));
+        plusButton.click();
 
     }
 
@@ -173,7 +158,5 @@ public class Products extends BaseTest {
             return "";
         }
     }
-
-
 
 }

@@ -72,7 +72,11 @@ public class LoginPage {
     @FindBy(xpath = "//div[@class='woocommerce-notices-wrapper']//ul[@class='woocommerce-error']//li/a]")
     private WebElement errorMaxProductInCart;
 
+    @FindBy(xpath = "//*[@id='menu-item-791023']/a")
+    private WebElement promotionsPage;
 
+    //div[@class='menu-main-container']/ul[@id='menu-xsmain-menu']/../li[@id='menu-item-791023']/a
+//div[@class='menu-main-container']/ul[@id='menu-xsmain-menu']/li[@id='menu-item-791023']/a]
 
     public LoginPage(WebDriver driver) {
         this.driver = driver;
@@ -176,7 +180,10 @@ public class LoginPage {
     }
 
 
-
+    public void goToPromotionsPage() {
+        wait.until(ExpectedConditions.visibilityOf(promotionsPage));
+        promotionsPage.click();
+    }
 
 
 }

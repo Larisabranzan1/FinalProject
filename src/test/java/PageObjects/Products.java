@@ -13,6 +13,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 
+import static org.openqa.selenium.support.ui.ExpectedConditions.elementToBeClickable;
 import static org.openqa.selenium.support.ui.ExpectedConditions.presenceOfElementLocated;
 
 public class Products extends BaseTest {
@@ -83,21 +84,49 @@ public class Products extends BaseTest {
     @FindBy(xpath = "//div[@class='woocommerce-notices-wrapper']//child::li")
     private WebElement errorMaxProductInCart;
 
-    @FindBy(xpath = " //a[@href='https://www.creatoys.ro/produs/casuta-de-papusi-cu-mobilier-little-dutch/']")
+    @FindBy(xpath = "//a[@href='https://www.creatoys.ro/produs/casuta-de-papusi-cu-mobilier-little-dutch/']")
     private WebElement dollHouseImage;
 
     @FindBy(xpath = "//tbody/tr/td[5]/div[@class='quantity']/span[2]")
     private WebElement plusButton;
 
-//tbody/tr/td[5]/div[@class='quantity']/span[2]
-//span[@class='et-cart-total-inner']/span
+    @FindBy(xpath = "//div[@class='text-center product-details']/span[@class='price']/../a[@href='?add-to-cart=767199']")
+    private WebElement carProductAddToCartBtn;
+
+    @FindBy(xpath = "//div[@class='col-md-12 col-sm-12 mob-center']/a")
+    private WebElement removeProductsFromBin;
+
+    @FindBy(xpath = "//div[@class='wc-proceed-to-checkout']/a[@href='https://www.creatoys.ro/checkout-2/']")
+    private WebElement proceedToCheckOut;
+
+    @FindBy(xpath = "//div[@class='cart-empty empty-cart-block']/h1")
+    private WebElement emptyBinMessage;
 
 
+    public String emptyBinMessage() {
+
+        try {
+            return emptyBinMessage.getText();
+        } catch (NoSuchElementException ex) {
+            return "";
+        }
+    }
+
+    public void removeProductsFromBin() {
+        wait.until(elementToBeClickable(removeProductsFromBin));
+        removeProductsFromBin.click();
+    }
+
+    public void goToCheckOut(WebDriver driver) {
+        wait.until(elementToBeClickable(proceedToCheckOut));
+        proceedToCheckOut.click();
+    }
 
 
-
-
-
+    public void clickOnCarAddToCartBtn() {
+        wait.until(elementToBeClickable(carProductAddToCartBtn));
+        carProductAddToCartBtn.click();
+    }
 
     public String CreaPageText() {
 
@@ -131,39 +160,34 @@ public class Products extends BaseTest {
         }
     }
 
-    public void clickonProduct() {
-        Actions clickAction = new Actions(driver);
-        wait = new WebDriverWait(driver, Duration.ofSeconds(40));
-        wait.until(presenceOfElementLocated(By.xpath("//div[@class='text-center product-details']/span[@class='price']/../a[@href='?add-to-cart=750754']")));
-        dollHouse.click();
 
+    public void clickonProduct(String productID) {
+        String productXpath = "//div[@class='text-center product-details']/span[@class='price']/../a[@href='?add-to-cart=" + productID + "']";
+        WebElement product = wait.until(ExpectedConditions.elementToBeClickable(By.xpath(productXpath)));
+        product.click();
     }
 
     public void clickonProductImage() {
-        Actions clickAction = new Actions(driver);
-        wait = new WebDriverWait(driver, Duration.ofSeconds(30));
         wait.until(presenceOfElementLocated(By.xpath("//a[@href='https://www.creatoys.ro/produs/casuta-de-papusi-cu-mobilier-little-dutch/']")));
         dollHouseImage.click();
 
     }
 
     public void clickOnMyCart() {
-        Actions clickAction = new Actions(driver);
-        wait = new WebDriverWait(driver, Duration.ofSeconds(20));
-        wait.until(presenceOfElementLocated(By.xpath("//a[@href='https://www.creatoys.ro/cosul-meu/']")));
+        wait.until(elementToBeClickable(myCart));
         myCart.click();
-
     }
 
+    public String getCartQTY() {
+        WebElement qty = wait.until(presenceOfElementLocated(By.xpath("//input[contains(@id,'quantity')]")));
+        return qty.getAttribute("value");
+    }
 
     public void clickOnPlus() {
-        Actions clickAction = new Actions(driver);
-        wait = new WebDriverWait(driver, Duration.ofSeconds(20));
-        wait.until(presenceOfElementLocated(By.xpath("//td[contains(@class, 'product-quantity')]/div/span[@class='plus']")));
-        myCart.click();
+        wait.until(elementToBeClickable(plusButton));
+        plusButton.click();
 
     }
-
 
     public String maxProductInCartMessageError() {
 

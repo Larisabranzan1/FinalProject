@@ -1,0 +1,26 @@
+[
+  {
+    "account": {
+      "username": "user1",
+      "password": ""
+    },
+    "userError": "",
+    "passwordError": "Please enter your password"
+  },
+  {
+    "account": {
+      "username": "",
+      "password": "test"
+    },
+    "userError": "Please enter your username",
+    "passwordError": ""
+  },
+  {
+    "account": {
+      "username": "",
+      "password": ""
+    },
+    "userError": "Please enter your username",
+    "passwordError": "Please enter your password"
+  }
+]

@@ -39,9 +39,12 @@ public class RegistrationPage  {
     @FindBy(xpath = "//*[@class='woocommerce-error']//child::li")
     private WebElement registerErr;
 
+    @FindBy(xpath = "//*[@class='woocommerce-error']//child::li")
+    private WebElement dataProcessingError;
 
     @FindBy(xpath = "//div[@class='woocommerce-MyAccount-content']//h3//span[contains(text(), 'Bine ai venit')]")
     private WebElement welcomeRegisterMessage;
+
 
 
     public RegistrationPage(WebDriver driver) {
@@ -80,6 +83,12 @@ public class RegistrationPage  {
         wait.until(ExpectedConditions.visibilityOf(registerPageBtn));
         return registerPageBtn.getText();
     }
+
+    public String dataProcessingError(){
+        wait.until(ExpectedConditions.visibilityOf(dataProcessingError));
+        return dataProcessingError.getText();
+    }
+
     public void accessRegistrationPage(){
         wait.until(ExpectedConditions.elementToBeClickable(registerPageBtn));
         registerPageBtn.click();

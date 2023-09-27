@@ -44,7 +44,7 @@ public class RegistrationTest extends BaseTest {
         return new Object[][]{
 
                 {"chrome", "", "", "Eroare: Te rog introdu o adresă de email validă.", ""},
-                {"chrome", "aaa@gmail.com", "", "", "Eroare: Te rog introdu o parolă pentru cont."},
+                {"edge", "aaa@gmail.com", "", "", "Eroare: Te rog introdu o parolă pentru cont."},
 
         };
     }
@@ -119,10 +119,46 @@ public class RegistrationTest extends BaseTest {
 
     }
 
+
+    @DataProvider(name = "registerWithoutDataProcessing")
+    public Object[][] registerWithoutDataProcessing() {
+        return new Object[][]{
+
+                {"firefox", "alexxxxxxEr@yahoo.com", "Rapid1923!!!!!", "Eroare: Avem nevoie de acordul pentru prelucrarea datelor!"},
+
+        };
+    }
+
+
+    @Test(dataProvider = "registerWithoutDataProcessing")
+    public void registerWithoutDataProcessing(String browser,
+                                             String username,
+                                             String password,
+                                             String dataProcessingErr
+    ) {
+        System.out.println("Register with existing username:" + username +
+                " /password:" + password +
+                " => on browser:" + browser);
+        //setUpDriver(browser);
+        //driver.get(baseUrl);
+        loginPage = new LoginPage(driver);
+        loginPage.goToLoginPage();
+        System.out.println("Opened login page.");
+
+        loginPage.goToRegistrationPage();
+        System.out.println("Opened registration page.");
+
+        registrationPage = new RegistrationPage(driver);
+        registrationPage.register(username, password);
+        System.out.println("Registration, verify error message");
+        Assert.assertEquals(registrationPage.dataProcessingError(), dataProcessingErr);
+
+    }
+
     @DataProvider(name = "registerPositive")
     public Object[][] registerPositive() {
         return new Object[][]{
-                {"chrome","larisa.branzan@gcxcvcxvxcvxvxvxmail.com", "Exchange15!!!!", "Bine ai venit în pagina contului tău"},
+                {"chrome","larisa.branzan@gcxcvcxvxcvxvxasashnhgvxmail.com", "Exchange15!!!!", "Bine ai venit în pagina contului tău"},
         };
     }
 
@@ -147,6 +183,9 @@ public class RegistrationTest extends BaseTest {
         Assert.assertEquals(registrationPage.WelcomeRegister(), welcome );
         System.out.println(registrationPage.WelcomeRegister());
     }
+
+
+
 
 }
 

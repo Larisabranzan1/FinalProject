@@ -5,6 +5,29 @@ public class LoginModel {
     private AccountModel account;
     private String passwordError;
     private String userError;
+    private String loginMessage;
+
+    public LoginModel() {
+    }
+
+    public LoginModel(String username, String password, String userError, String passwordError) {
+        AccountModel accountM = new AccountModel();
+        accountM.setPassword(password);
+        accountM.setUsername(username);
+
+        this.account = accountM;
+        this.userError = userError;
+        this.passwordError = passwordError;
+    }
+
+    public String getLoginMessage() {
+        return loginMessage;
+    }
+
+    public void setLoginMessage(String loginMessage) {
+        this.loginMessage = loginMessage;
+    }
+
 
 
     public AccountModel getAccount() {

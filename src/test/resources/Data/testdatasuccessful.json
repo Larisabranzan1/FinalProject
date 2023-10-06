@@ -1,0 +1,17 @@
+[
+{
+  "account": {
+    "username": "larisa.branzan@gmail.com",
+    "password": "Exchange15!!!!"
+  },
+ "loginMessage": "Login successful"
+},
+  {
+    "account": {
+      "username": "cristina@gmail.com",
+      "password": "Exchange15!!!!"
+    },
+    "loginMessage": "Login successful"
+  }
+]
+

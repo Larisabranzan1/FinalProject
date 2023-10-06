@@ -15,13 +15,19 @@ public class BaseTest {
 
     public WebDriver driver;
     String baseUrl;
-
+    String dbHostname, dbPort, dbUser, dbPassword, dbSchema;
 
     @BeforeClass
     public void setUp() {
         baseUrl = ConfigUtils.getGenericElement(ConstantUtils.CONFIG_FILE, "hostname");
+        dbHostname = ConfigUtils.getGenericElement(ConstantUtils.CONFIG_FILE, "dbHostname");
+        dbPort = ConfigUtils.getGenericElement(ConstantUtils.CONFIG_FILE, "dbPort");
+        dbUser = ConfigUtils.getGenericElement(ConstantUtils.CONFIG_FILE, "dbUser");
+        dbPassword = ConfigUtils.getGenericElement(ConstantUtils.CONFIG_FILE, "dbPassword");
+        dbSchema = ConfigUtils.getGenericElement(ConstantUtils.CONFIG_FILE, "dbSchema");
 
     }
+
 
     public void setUpDriver(String browserName) {
         String browser = browserName;

@@ -1,15 +1,12 @@
 package Tests;
 
 import PageObjects.*;
-import org.openqa.selenium.ElementClickInterceptedException;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-import org.openqa.selenium.NoAlertPresentException;
 
 public class CheckoutTests extends BaseTest {
 
@@ -23,8 +20,6 @@ public class CheckoutTests extends BaseTest {
     RegistrationPage registrationPage;
 
 
-
-
     @DataProvider(name = "AddToCartAndProceedToCheckOut")
     public Object[][] AddToCartAndProceedToCheckOut() {
         return new Object[][]{
@@ -33,12 +28,10 @@ public class CheckoutTests extends BaseTest {
         };
     }
 
-
     @Test(dataProvider = "AddToCartAndProceedToCheckOut")
     public void AddToCartAndProceedToCheckOut(String username, String password, String browser, String billingMessage) throws InterruptedException {
         System.out.println("Login with username:" + username + "/password:" + password + "=> on browser:" + browser);
-        setUpDriver(browser);
-        driver.get(baseUrl);
+
         System.out.println("Open Browser");
 
         loginPage = new LoginPage(driver);
@@ -64,9 +57,18 @@ public class CheckoutTests extends BaseTest {
             checkOutPage.enterTextFirstName("Larisa");
             checkOutPage.enterTextLastName("Branzan");
             checkOutPage.enterTextPhone("0784885620");
+            checkOutPage.enterPostal("011333");
             checkOutPage.enterEmail("larisa.branzan@gmail.com");
-            checkOutPage.
-
+            checkOutPage.moveToCountryAndClick();
+            checkOutPage.clickOnField("România");
+            checkOutPage.moveToStateAndClick();
+            checkOutPage.clickOnField("Cluj");
+            checkOutPage.moveToCityAndClick();
+            checkOutPage.clickOnField("Agris");
+ //           checkOutPage.clickAcceptTermsAndConditions();
+        checkOutPage.enterStreet("Ajustorului");
+            checkOutPage.clickOnSubmitOrder();
+        Assert.assertTrue(checkOutPage.myOrder().contains("COMANDA TA"));
 
     }
 

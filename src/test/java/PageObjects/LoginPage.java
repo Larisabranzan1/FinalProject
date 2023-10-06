@@ -16,6 +16,8 @@ import static org.openqa.selenium.support.ui.ExpectedConditions.presenceOfElemen
 public class LoginPage {
     WebDriver driver;
     WebDriverWait wait;
+    Actions actions;
+
 
 
     @FindBy(id = "reg_email")
@@ -60,9 +62,6 @@ public class LoginPage {
     @FindBy(xpath = "//div[@class='et_element et_b_header-logo align-start mob-align-center et_element-top-level']//a")
     private WebElement creaLogo;
 
-//    @FindBy(xpath = "//div[@class='et_element et_b_header-logo align-start mob-align-center et_element-top-level']//a")
-//    private WebElement creaLogo;
-
     @FindBy(xpath = "//span[@class='et-cart-total-inner']/span")
     private WebElement myCart;
 
@@ -75,8 +74,17 @@ public class LoginPage {
     @FindBy(xpath = "//*[@id='menu-item-791023']/a")
     private WebElement promotionsPage;
 
-    //div[@class='menu-main-container']/ul[@id='menu-xsmain-menu']/../li[@id='menu-item-791023']/a
-//div[@class='menu-main-container']/ul[@id='menu-xsmain-menu']/li[@id='menu-item-791023']/a]
+    @FindBy(xpath="//div[@class='input-row flex align-items-center ']/input[@class='form-control']")
+    private WebElement searchInput;
+
+    @FindBy(xpath="//h2[@class='products-title']//span[2]")
+    private WebElement positiveSearchMessage;
+
+    @FindBy(xpath="//div[@class='empty-category-block']/h2")
+    private WebElement negativeSearch;
+
+
+
 
     public LoginPage(WebDriver driver) {
         this.driver = driver;
@@ -90,10 +98,6 @@ public class LoginPage {
         myAccount.click();
     }
 
-    public void accessRegistrationPage() {
-        wait.until(ExpectedConditions.elementToBeClickable(registerPageBtn));
-        registerPageBtn.click();
-    }
 
     public void goToRegistrationPage() {
         wait.until(ExpectedConditions.visibilityOf(registerPageBtn));
@@ -125,59 +129,12 @@ public class LoginPage {
         login.click();
     }
 
-    public String WelcomeRegister() {
-
-        try {
-            return welcomeRegisterMessage.getText();
-        } catch (NoSuchElementException ex) {
-            return "";
-        }
-    }
-
-    public void goToCreaPage() {
-        wait.until(ExpectedConditions.visibilityOf(creaLogo));
-        myAccount.click();
-    }
-
 
     public void goToProducts(WebDriver driver) {
         wait.until(ExpectedConditions.visibilityOf(creaLogo));
         creaLogo.click();
     }
 
-    public String CreaPageText() {
-
-        try {
-            return creaLogo.getText();
-        } catch (NoSuchElementException ex) {
-            return "";
-        }
-    }
-
-    public void clickonProduct() {
-        Actions clickAction = new Actions(driver);
-        wait = new WebDriverWait(driver, Duration.ofSeconds(20));
-        wait.until(presenceOfElementLocated(By.xpath("//div[@class='text-center product-details']/span[@class='price']/../a[@href='?add-to-cart=750754']")));
-        dollHouse.click();
-
-    }
-
-    public void clickOnMyCart() {
-        Actions clickAction = new Actions(driver);
-        wait = new WebDriverWait(driver, Duration.ofSeconds(20));
-        wait.until(presenceOfElementLocated(By.xpath("//div[@class='text-center product-details']/span[@class='price']/../a[@href='?add-to-cart=750754']")));
-        myCart.click();
-
-    }
-
-    public String productName() {
-
-        try {
-            return productName.getText();
-        } catch (NoSuchElementException ex) {
-            return "";
-        }
-    }
 
 
     public void goToPromotionsPage() {
@@ -185,14 +142,33 @@ public class LoginPage {
         promotionsPage.click();
     }
 
+    public void setSearchInput(String input){
+        actions = new Actions(driver);
+        wait.until(ExpectedConditions.visibilityOf(searchInput));
+        searchInput.sendKeys(input);
+        actions.sendKeys(Keys.ENTER).click().build().perform();
+    }
+
+    public String getPositiveSearchMessage() {
+        try{
+            System.out.println(positiveSearchMessage.getText());
+            return positiveSearchMessage.getText();
+        } catch(NoSuchElementException ex) {
+            return "";
+        }
+    }
+
+    public String getNegativeSearchMessage() {
+        try{
+            System.out.println(negativeSearch.getText());
+            return negativeSearch.getText();
+        } catch(NoSuchElementException ex) {
+            return "";
+        }
+    }
 
 }
 
-    //  public CookiePage goToCookiePage(){
-  //      wait.until(ExpectedConditions.visibilityOf(cookieButtonElement));
-  //      cookieButtonElement.click();
- //      return new CookiePage(driver);
- //   }
 
 
 

@@ -24,15 +24,18 @@ public class Promotions {
 
     @FindBy(xpath = "//*[@id='menu-item-706723']/a")
     private WebElement brandsButtonHover;
-//Brands Button
-
-
 
     @FindBy(xpath = "//*[@id='menu-item-743585']")
     private WebElement selectedDropDownOptionElement;
 
     @FindBy(xpath = "//*[@id='menu-item-706723']/div/div")
     private List<WebElement> dropDownElements;
+
+
+    @FindBy(xpath = "//h2[@class='product-title']/a[contains(text(), 'AquaPlay BoatSet')]")
+    private WebElement AquaPlayProduct;
+
+
 
     public Promotions(WebDriver driver) {
         this.driver = driver;
@@ -55,21 +58,19 @@ public class Promotions {
     }
 
     public void moveToButton() {
-        actions.moveToElement(brandsButtonHover).perform();
+        actions.moveToElement(brandsButtonHover).build().perform();
     }
 
-    public void clickDropDownOption(int dropDownOptionIndex) {
-        actions.moveToElement(dropDownElements.get(dropDownOptionIndex)).click()
-                .build().perform();
-//        dropDownElements.get(dropDownOptionIndex).click();
 
+
+    public void clickOnOption(String option){
+        String optionXpath="//div[@class='nav-sublist']//a[contains(text(), '"+option+"')]";
+        WebElement optionElement=driver.findElement(By.xpath(optionXpath));
+        wait.until(ExpectedConditions.elementToBeClickable(optionElement));
+        optionElement.click();
     }
 
-    public String getDropDownOption(int dropDownOptionIndex) {
-        return dropDownElements.get(dropDownOptionIndex).getText();
-    }
-
-    public String getSelectedDropDownOption() {
-        return selectedDropDownOptionElement.getText();
+    public String getAquaPlayText() {
+        return AquaPlayProduct.getText();
     }
 }

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Smoke Tests">
+    <listeners>
+        <listener class-name="org.testng.reporters.EmailableReporter2"/>
+        <listener class-name="org.testng.reporters.EmailableReporter"/>
+    </listeners>
+    <test thread-count="5" name="Positive Tests">
+        <classes>
+            <class name="Tests.LoginTest">
+                <methods>
+                    <include name="loginPositive"/>
+                    <include name="testHomePageTitle"/>
+                </methods>
+            </class>
+            <class name="Tests.ActionsTest">
+                <methods>
+                    <include name="clickFirstDropDownOption"/>
+                    <include name="hoverTest"/>
+                </methods>
+            </class>
+            <class name="Tests.RegistrationTest">
+                <methods>
+                    <include name="registerPositive"/>
+                </methods>
+            </class>
+            <class name="Tests.CheckoutTests">
+                <methods>
+                    <include name="AddToCartAndProceedToCheckOut"/>
+                </methods>
+            </class>
+            <class name="Tests.LoginDataSource">
+                <methods>
+                    <include name="positiveJsonLogin"/>
+                </methods>
+            </class>
+            <class name="Tests.ProductsTests">
+                <methods>
+                    <include name="AddToCart"/>
+                    <include name="AddtoCartUntilReachingMaxQuantity"/>
+                    <include name="RemoveFromCart"/>
+                    <include name="myCartIsEmpty"/>
+                </methods>
+            </class>
+            <class name="Tests.SearchTest">
+                <methods>
+                    <include name="searchDP"/>
+                </methods>
+            </class>
+        </classes>
+    </test> <!-- FinalProject -->
+</suite> <!-- Default Suite -->

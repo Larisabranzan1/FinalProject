@@ -37,8 +37,6 @@ public class LoginTest extends BaseTest {
     @Test(dataProvider = "loginPDp")
     public void loginPositive(String username, String password, String browser) {
         System.out.println("Login with username:" + username + "/password:" + password + "=> on browser:" + browser);
-        setUpDriver(browser);
-        driver.get(baseUrl);
         System.out.println("Open Browser");
 
         loginPage = new LoginPage(driver);
@@ -47,7 +45,7 @@ public class LoginTest extends BaseTest {
         System.out.println("Login finished, verify error message");
         accountPage = new AccountPage(driver);
         Assert.assertTrue(accountPage.getNamePersAccount().contains(username));
-        System.out.println("Logout user");
+        System.out.println("User was logged in with success!");
     }
 
 
@@ -63,10 +61,7 @@ public class LoginTest extends BaseTest {
     @Test(dataProvider = "loginNDp1")
     public void loginNegativeDataProvider1(String username, String password, String browser, String usernameErr, String passErr) {
         System.out.println("Login with username:" + username + "/password:" + password + "=> on browser:" + browser);
-        setUpDriver(browser);
-        driver.get(baseUrl);
         System.out.println("Open Browser");
-
         loginPage = new LoginPage(driver);
         loginPage.goToLoginPage();
         loginPage.login(username, password);
@@ -89,10 +84,7 @@ public class LoginTest extends BaseTest {
     @Test(dataProvider = "loginNDp2")
     public void loginNegativeDataProvider2(String username, String password, String browser, String usernameErr, String passErr) {
         System.out.println("Login with username:" + username + "/password:" + password + "=> on browser:" + browser);
-        setUpDriver(browser);
-        driver.get(baseUrl);
         System.out.println("Open Browser");
-
         loginPage = new LoginPage(driver);
         loginPage.goToLoginPage();
         loginPage.login(username, password);
@@ -101,7 +93,6 @@ public class LoginTest extends BaseTest {
         if (username.isEmpty() && password.isEmpty()) {
             Assert.assertTrue(loginPage.geUsernameErr().contains(usernameErr));
         }
-
     }
 
 }

@@ -1,9 +1,6 @@
 package Tests;
 
-import PageObjects.AccountPage;
-import PageObjects.Products;
-import PageObjects.LoginPage;
-import PageObjects.RegistrationPage;
+import PageObjects.*;
 import org.openqa.selenium.ElementClickInterceptedException;
 import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.WebElement;
@@ -29,19 +26,16 @@ public class ProductsTests extends BaseTest {
     @DataProvider(name = "AddToCart")
     public Object[][] AddToCart() {
         return new Object[][]{
-                {"larisa.branzan@gmail.com", "Exchange15!!!!", "chrome", "Casuta de papusi cu mobilier, Little Dutch"},
+                {"larisa.branzan@gmail.com", "Exchange15!!!!", "chrome", "Masinute pe rampa mare din lemn, Wonderworld"},
 
         };
     }
 
 
     @Test(dataProvider = "AddToCart")
-    public void AddToCart(String username, String password, String browser, String product) {
+    public void AddToCart(String username, String password, String browser, String product) throws InterruptedException {
         System.out.println("Login with username:" + username + "/password:" + password + "=> on browser:" + browser);
-        setUpDriver(browser);
-        driver.get(baseUrl);
         System.out.println("Open Browser");
-
         loginPage = new LoginPage(driver);
         loginPage.goToLoginPage();
         loginPage.login(username, password);
@@ -50,10 +44,14 @@ public class ProductsTests extends BaseTest {
         Assert.assertTrue(accountPage.getNamePersAccount().contains(username));
         System.out.println("Logout user");
         loginPage.goToProducts(driver);
-        loginPage.clickonProduct();
-        loginPage.clickOnMyCart();
-        Assert.assertEquals(loginPage.productName(), product);
-    }
+        products = new Products(driver);
+        products.clickonProduct("767199");
+        Thread.sleep(3000);
+        products.clickOnMyCart();
+
+            Assert.assertEquals(products.getDollHouseText(), product);
+        }
+
 
     @DataProvider(name = "AddtoCartUntilReachingMaxQuantity")
     public Object[][] AddtoCartUntilReachingMaxQuantity() {
@@ -67,20 +65,18 @@ public class ProductsTests extends BaseTest {
     @Test(dataProvider = "AddtoCartUntilReachingMaxQuantity")
     public void AddtoCartUntilReachingMaxQuantity(String browser, String message) throws InterruptedException {
         System.out.println("Order Product Multiple Times" + "=> on browser:" + browser);
-        setUpDriver(browser);
-        driver.get(baseUrl);
         System.out.println("Open Browser");
         loginPage = new LoginPage(driver);
         loginPage.goToLoginPage();
         accountPage = new AccountPage(driver);
         loginPage.goToProducts(driver);
         products = new Products(driver);
-        int maxQuantity = 5; // Maximum quantity
+        int maxQuantity = 4; // Maximum quantity
         int retry = 0; // Initialize the retry variable
 
 
         products.clickonProduct("750754");//Clicks on Add to cart button
-        Thread.sleep(3000);
+        Thread.sleep(5000);
         products.clickOnMyCart();
 
 //       add multiple products on cart
@@ -94,7 +90,7 @@ public class ProductsTests extends BaseTest {
             System.out.println("Added product to cart, Quantity: " + (i + 1));
         }
 
-        Assert.assertEquals(products.getCartQTY(), "4");
+        Assert.assertEquals(products.getCartQTY(), "3");
         System.out.println("Products added with max capacity on");
     }
 
@@ -110,51 +106,49 @@ public class ProductsTests extends BaseTest {
     }
 
     @Test(dataProvider = "RemoveFromCart")
-    public void RemoveFromCart(String browser, String message) throws InterruptedException {
+    public void RemoveFromCart(String browser, String message) throws InterruptedException, MyCustomException {
         System.out.println("Order one product and remove from Cart" + "=> on browser:" + browser);
-        setUpDriver(browser);
-        driver.get(baseUrl);
         System.out.println("Open Browser");
         loginPage = new LoginPage(driver);
         loginPage.goToLoginPage();
         accountPage = new AccountPage(driver);
         loginPage.goToProducts(driver);
         products = new Products(driver);
-
-        int maxRetry = 2; // Maximum retry
-        int retry = 0; // Initialize the retry variable
-
-
         products.clickonProduct("767199");//Clicks on Add to cart button
-        Thread.sleep(5000);
+        Thread.sleep(6000);
         products.clickOnMyCart();
+        int maxRetries = 3;
+        int retryCount = 0;
+        boolean success = false;
 
-//       add multiple products on cart
-        for (int i = 0; i < maxRetry; i++) {
+        while (!success && retryCount < maxRetries) {
             try {
                 products.removeProductsFromBin();
-
-                try {
-
-                    driver.switchTo().alert().accept();
-                } catch (NoAlertPresentException e) {
-
-                }
-            } catch (ElementClickInterceptedException e) {
-                retry++;
+                success = true;
+            } catch (Exception e) {
+                // Log the exception or take other appropriate actions
+                retryCount++;
             }
-            System.out.println("Product Removed, Quantity: " + (i + 0));
         }
 
+        driver.switchTo().alert().accept();
         products.clickOnMyCart();
-
         Assert.assertEquals(products.emptyBinMessage(), message);
-
-        }
-
-
-
     }
+
+    @Test
+    public void myCartIsEmpty(){
+        loginPage = new LoginPage(driver);
+        loginPage.goToLoginPage();
+        accountPage = new AccountPage(driver);
+        loginPage.goToProducts(driver);
+        products = new Products(driver);
+        products.clickOnMyCart();
+        Assert.assertEquals(products.emptyBinMessage(), "COȘUL DE CUMPĂRĂTURI ESTE GOL");
+    }
+
+
+}
 
 
 

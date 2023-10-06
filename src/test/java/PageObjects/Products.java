@@ -1,11 +1,9 @@
 package PageObjects;
 
 import Tests.BaseTest;
-import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.interactions.MoveTargetOutOfBoundsException;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -75,7 +73,7 @@ public class Products extends BaseTest {
     @FindBy(xpath = "//div[@class='et_element et_b_header-logo align-start mob-align-center et_element-top-level']//a")
     private WebElement creaLogo;
 
-    @FindBy(xpath = " //div[@class='cart-item-details']/a[@class='product-title']")
+    @FindBy(xpath = " //div[@class='cart-item-details']/a")
     private WebElement productName;
 
     @FindBy(xpath = "//a[@href='https://www.creatoys.ro/cosul-meu/']")
@@ -117,48 +115,47 @@ public class Products extends BaseTest {
         removeProductsFromBin.click();
     }
 
+    public void removeFromBinUsingScroll() throws MyCustomException {
+        wait.until(ExpectedConditions.visibilityOf(removeProductsFromBin));
+        int currentRetry = 0;
+        while (currentRetry < 50) {
+            try {
+                actions.keyDown(Keys.CONTROL).sendKeys(Keys.END).keyUp(Keys.CONTROL).build().perform();
+                removeProductsFromBin.click();
+                break;
+            } catch (MoveTargetOutOfBoundsException | ElementClickInterceptedException e) {
+                currentRetry++;
+            }
+        }
+        if (currentRetry >= 50) {
+            throw new MyCustomException("Max retry reached");
+        }
+    }
+
+    public void removeFromBinUsingScroll2() throws MyCustomException {
+        wait.until(ExpectedConditions.visibilityOf(removeProductsFromBin));
+        int currentRetry = 0;
+        while (currentRetry < 50) {
+            try {
+                ((JavascriptExecutor) driver).executeScript(
+                        "arguments[0].scrollIntoView(true);", removeProductsFromBin);
+                removeProductsFromBin.click();
+                break;
+            } catch (ElementClickInterceptedException e) {
+                currentRetry++;
+            }
+        }
+        if (currentRetry >= 50) {
+            throw new MyCustomException("Max retry reached");
+        }
+    }
+
+
     public void goToCheckOut(WebDriver driver) {
         wait.until(elementToBeClickable(proceedToCheckOut));
         proceedToCheckOut.click();
     }
 
-
-    public void clickOnCarAddToCartBtn() {
-        wait.until(elementToBeClickable(carProductAddToCartBtn));
-        carProductAddToCartBtn.click();
-    }
-
-    public String CreaPageText() {
-
-        try {
-            return creaLogo.getText();
-        } catch (NoSuchElementException ex) {
-            return "";
-        }
-    }
-
-
-    public void goToCreaPage() {
-        wait.until(ExpectedConditions.visibilityOf(creaLogo));
-        myAccount.click();
-    }
-
-
-
-    public void goToCreaLogo(WebDriver driver) {
-        wait.until(ExpectedConditions.visibilityOf(creaLogo));
-        creaLogo.click();
-    }
-
-
-    public String productName() {
-
-        try {
-            return productName.getText();
-        } catch (NoSuchElementException ex) {
-            return "";
-        }
-    }
 
 
     public void clickonProduct(String productID) {
@@ -167,15 +164,14 @@ public class Products extends BaseTest {
         product.click();
     }
 
-    public void clickonProductImage() {
-        wait.until(presenceOfElementLocated(By.xpath("//a[@href='https://www.creatoys.ro/produs/casuta-de-papusi-cu-mobilier-little-dutch/']")));
-        dollHouseImage.click();
 
-    }
 
     public void clickOnMyCart() {
-        wait.until(elementToBeClickable(myCart));
+        Actions clickAction = new Actions(driver);
+        wait = new WebDriverWait(driver, Duration.ofSeconds(20));
+        wait.until(presenceOfElementLocated(By.xpath("//a[@href='https://www.creatoys.ro/cosul-meu/']")));
         myCart.click();
+
     }
 
     public String getCartQTY() {
@@ -189,15 +185,13 @@ public class Products extends BaseTest {
 
     }
 
-    public String maxProductInCartMessageError() {
 
-        try {
-            return errorMaxProductInCart.getText();
-        } catch (NoSuchElementException ex) {
-            return "";
-        }
+    public String getDollHouseText() {
+        wait = new WebDriverWait(driver, Duration.ofSeconds(20));
+        wait.until(presenceOfElementLocated(By.xpath("//div[@class='cart-item-details']/a")));
+        return productName.getText();
     }
-
-
-
 }
+
+
+

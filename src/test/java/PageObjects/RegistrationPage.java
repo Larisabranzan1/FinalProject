@@ -9,6 +9,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
+import java.util.Random;
 
 import static org.openqa.selenium.support.ui.ExpectedConditions.presenceOfElementLocated;
 
@@ -55,21 +56,6 @@ public class RegistrationPage  {
     }
 
 
-
-
-    public void usernameInputRegistration(String username) {
-        wait.until(ExpectedConditions.elementToBeClickable(regEmail));
-        regEmail.clear();
-        regEmail.sendKeys(username);
-        registerPageBtn.click();
-    }
-
-        public void passwordInputRegistration(String password){
-            wait.until(ExpectedConditions.elementToBeClickable(regPass));
-            regPass.clear();
-            regPass.sendKeys(password);
-        }
-
     public void register(String username, String password) {
         wait.until(ExpectedConditions.elementToBeClickable(regEmail));
         regEmail.clear();
@@ -89,63 +75,7 @@ public class RegistrationPage  {
         return dataProcessingError.getText();
     }
 
-    public void accessRegistrationPage(){
-        wait.until(ExpectedConditions.elementToBeClickable(registerPageBtn));
-        registerPageBtn.click();
-    }
 
-    public void clickTermsCheckboxUsingActionsScroll() throws MyCustomException {
-        wait.until(ExpectedConditions.visibilityOf(acceptPolicy));
-        int currentRetry = 0;
-        while (currentRetry < 50) {
-            try {
-                actions.keyDown(Keys.CONTROL).sendKeys(Keys.END).keyUp(Keys.CONTROL).build().perform();
-                acceptPolicy.click();
-                if (acceptPolicy.findElement(By.xpath("//*[@id='privacy_policy_reg']/..")).isSelected()) {
-                    break;
-                }
-            } catch (MoveTargetOutOfBoundsException | ElementClickInterceptedException e) {
-                currentRetry++;
-            }
-        }
-        if (currentRetry >= 50) {
-            throw new MyCustomException("Max retry reached");
-        }
-    }
-
-
-
-    public void unclickTermsCheckboxUsingActionsScroll() throws MyCustomException {
-        wait.until(ExpectedConditions.visibilityOf(acceptPolicy));
-        int currentRetry = 0;
-        while (currentRetry < 50) {
-            try {
-                actions.keyDown(Keys.CONTROL).sendKeys(Keys.HOME).keyUp(Keys.CONTROL).build().perform();
-                if (acceptPolicy.isSelected()) {
-                    acceptPolicy.click();
-                }
-                break;
-            } catch (MoveTargetOutOfBoundsException | ElementClickInterceptedException e) {
-                currentRetry++;
-            }
-        }
-        if (currentRetry >= 50) {
-            throw new MyCustomException("Max retry reached");
-        }
-    }
-
-    public boolean isCheckBoxSelected(){
-        return acceptPolicy.isSelected();
-    }
-
-    public void clickRegisterBtn(){
-        Actions clickAction = new Actions(driver);
-        wait = new WebDriverWait(driver, Duration.ofSeconds(20));
-        wait.until(presenceOfElementLocated(By.id("reg_email")));
-        clickAction.moveToElement(registerPageBtn);
-        registerPageBtn.sendKeys(Keys.ENTER);
-        registerPageBtn.click();
-    }
 
     public void clickAcceptTerms(){
         Actions clickAction = new Actions(driver);
@@ -154,8 +84,6 @@ public class RegistrationPage  {
         clickAction.moveToElement(acceptPolicy);
         acceptPolicy.click();
     }
-
-
 
 
 
@@ -173,5 +101,21 @@ public class RegistrationPage  {
             return "";
         }
     }
+
+
+
+
+    public void randomRegister(String newUsername, String newPassword) {
+        wait.until(ExpectedConditions.elementToBeClickable(regEmail));
+        regEmail.clear();
+        int number = new Random().nextInt(1000);
+         newUsername = "user" + Integer.toString(number) + "@creatoys.ro";
+        regEmail.sendKeys(newUsername);
+        regPass.clear();
+        regPass.sendKeys(newPassword);
+        registerPageBtn.click();
+    }
+
+
 
 }

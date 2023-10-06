@@ -1,18 +1,26 @@
 [
   {
     "account": {
-      "username": "user1",
-      "password": ""
+      "username": "",
+      "password": "somePassword"
     },
-    "userError": "",
-    "passwordError": "Please enter your password"
+    "userError": "Eroare: Numele de utilizator este obligatoriu.",
+    "passwordError": ""
   },
   {
     "account": {
-      "username": "",
-      "password": "test"
+      "username": "larisa.branzan@gmail.com",
+      "password": ""
     },
-    "userError": "Please enter your username",
+    "userError": "",
+    "passwordError": "Eroare: câmpul parolă este gol"
+  },
+  {
+    "account": {
+      "username": "zebra",
+      "password": "zebrapassword"
+    },
+    "userError": "Eroare: numele de utilizator zebra nu este înregistrat pe acest site. Dacă nu îți amintești numele de utilizator, încearcă folosind adresa de email.",
     "passwordError": ""
   },
   {
@@ -20,7 +28,8 @@
       "username": "",
       "password": ""
     },
-    "userError": "Please enter your username",
-    "passwordError": "Please enter your password"
+    "userError": "Eroare: Numele de utilizator este obligatoriu.",
+    "passwordError": ""
   }
+
 ]

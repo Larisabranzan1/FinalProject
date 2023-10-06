@@ -103,15 +103,11 @@ public class RegistrationTest extends BaseTest {
         System.out.println("Register with existing username:" + username +
                 " /password:" + password +
                 " => on browser:" + browser);
-        //setUpDriver(browser);
-        //driver.get(baseUrl);
         loginPage = new LoginPage(driver);
         loginPage.goToLoginPage();
         System.out.println("Opened login page.");
-
         loginPage.goToRegistrationPage();
         System.out.println("Opened registration page.");
-
         registrationPage = new RegistrationPage(driver);
         registrationPage.register(username, password);
         System.out.println("Registration, verify error message");
@@ -124,7 +120,7 @@ public class RegistrationTest extends BaseTest {
     public Object[][] registerWithoutDataProcessing() {
         return new Object[][]{
 
-                {"firefox", "alexxxxxxEr@yahoo.com", "Rapid1923!!!!!", "Eroare: Avem nevoie de acordul pentru prelucrarea datelor!"},
+                {"chrome", "alexxxxxxEr@yahoo.com", "Rapid1923!!!!!", "Eroare: Avem nevoie de acordul pentru prelucrarea datelor!"},
 
         };
     }
@@ -139,8 +135,7 @@ public class RegistrationTest extends BaseTest {
         System.out.println("Register with existing username:" + username +
                 " /password:" + password +
                 " => on browser:" + browser);
-        //setUpDriver(browser);
-        //driver.get(baseUrl);
+
         loginPage = new LoginPage(driver);
         loginPage.goToLoginPage();
         System.out.println("Opened login page.");
@@ -158,7 +153,7 @@ public class RegistrationTest extends BaseTest {
     @DataProvider(name = "registerPositive")
     public Object[][] registerPositive() {
         return new Object[][]{
-                {"chrome","larisa.branzan@gcxcvcxvxcvxvxasashnhgvxmail.com", "Exchange15!!!!", "Bine ai venit în pagina contului tău"},
+                {"chrome","larisa.branzan@gcxcvcxvxcvfdddxvxasjjhashnhgvxmail.com", "Exchange15!!!!", "Bine ai venit în pagina contului tău"},
         };
     }
 
@@ -179,11 +174,10 @@ public class RegistrationTest extends BaseTest {
         System.out.println("Opened registration page.");
         registrationPage=new RegistrationPage(driver);
         registrationPage.clickAcceptTerms();
-        registrationPage.register(username,password);
+        registrationPage.randomRegister(username,password);
         Assert.assertEquals(registrationPage.WelcomeRegister(), welcome );
         System.out.println(registrationPage.WelcomeRegister());
     }
-
 
 
 

@@ -153,7 +153,7 @@ public class RegistrationTest extends BaseTest {
     @DataProvider(name = "registerPositive")
     public Object[][] registerPositive() {
         return new Object[][]{
-                {"chrome","larisa.branzan@gcxcvcxvxcvfdddxvxasjjhashnhgvxmail.com", "Exchange15!!!!", "Bine ai venit în pagina contului tău"},
+                {"chrome","", "Exchange15!!!!", "Bine ai venit în pagina contului tău"},
         };
     }
 

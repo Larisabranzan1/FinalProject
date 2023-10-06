@@ -126,6 +126,7 @@ public class ProductsTests extends BaseTest {
 
         driver.switchTo().alert().accept();
         products.clickOnMyCart();
+        driver.navigate().refresh();
         Assert.assertEquals(products.emptyBinMessage(), message);
     }
 

@@ -1,32 +1,20 @@
 package Tests;
 
-import PageObjects.AccountPage;
+
 import PageObjects.LoginPage;
-import PageObjects.MyCustomException;
 import PageObjects.RegistrationPage;
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
-
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.time.Duration;
-import java.util.concurrent.TimeUnit;
 
 public class RegistrationTest extends BaseTest {
     RegistrationPage registrationPage;
-    AccountPage accountPage;
     LoginPage loginPage;
     WebElement page;
     WebDriverWait wait;
-
 
     @DataProvider(name = "browsers")
     public Object[][] dp() {

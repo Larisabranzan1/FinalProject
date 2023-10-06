@@ -218,6 +218,5 @@ public class LoginDataSource extends LoginTest{
         return Tools.replaceElements(resultSet.getString(element), "''", "");
     }
 
-    //This is a test
 
 }

@@ -1,20 +1,12 @@
 package Tests;
-
-import PageObjects.AccountPage;
 import PageObjects.LoginPage;
-import PageObjects.Products;
-import PageObjects.RegistrationPage;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 public class SearchTest extends BaseTest {
-    Products products;
-    RegistrationPage registrationPage;
-    AccountPage accountPage;
     LoginPage loginPage;
     WebElement page;
     WebDriverWait wait;

@@ -1,16 +1,11 @@
 package Tests;
-
 import PageObjects.*;
 import org.openqa.selenium.ElementClickInterceptedException;
-import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-
-import java.time.Duration;
-import java.util.concurrent.TimeUnit;
 
 
 public class ProductsTests extends BaseTest {
@@ -93,8 +88,6 @@ public class ProductsTests extends BaseTest {
         Assert.assertEquals(products.getCartQTY(), "3");
         System.out.println("Products added with max capacity on");
     }
-
-
 
 
     @DataProvider(name = "RemoveFromCart")

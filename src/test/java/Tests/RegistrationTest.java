@@ -164,8 +164,7 @@ public class RegistrationTest extends BaseTest {
                                              String password,
                                              String welcome ) {
 
-        //setUpDriver(browser);
-        //driver.get(baseUrl);
+
 
         loginPage = new LoginPage(driver);
         loginPage.goToLoginPage();
@@ -180,7 +179,5 @@ public class RegistrationTest extends BaseTest {
     }
 
 
-
 }
 
-//TEST

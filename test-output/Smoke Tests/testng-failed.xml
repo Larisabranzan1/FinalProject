@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Failed suite [Smoke Tests]" guice-stage="DEVELOPMENT">
+  <test thread-count="5" name="Login Tests with different data sources(failed)">
+    <classes>
+      <class name="Tests.RegistrationTest">
+        <methods>
+          <include name="startBrowser"/>
+          <include name="setUp"/>
+          <include name="registerNegativeExistingUser" invocation-numbers="0"/>
+          <include name="cleanUp"/>
+        </methods>
+      </class> <!-- Tests.RegistrationTest -->
+    </classes>
+  </test> <!-- Login Tests with different data sources(failed) -->
+</suite> <!-- Failed suite [Smoke Tests] -->
